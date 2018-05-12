@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+
+<head>
+    <title>Basic SocketIO Chat</title>
+    <meta charset="utf-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+    <script src="//code.jquery.com/jquery-latest.min.js"></script>
+    <script>
+        var socket = io.connect('http://localhost:4321');
+
+        $(document).ready(function() {
+            socket.on('list', (data) => {
+                $('#userList').html('')
+                for (var i; i < data.length; i++) {
+                    $('#userList').append('<li>' + data[i] + '</il>')
+                }
+            })
+            socket.on('sendFromServer', function(data) {
+                console.log(data);
+                $('#msgPool').append('<p>' + data + '</p>');
+            });
+            socket.on('sendMsg', (data) => {
+                $('#msgPool').append('<p><span class="name">' + data.name + '</span></p>')
+            })
+            socket.on('join', () => {
+                $('#login_form').removeClass('hide')
+                $('#chat_form').addClass('hide')
+            })
+            $('#userMsg').keyup(function(e) {
+                if (e.which == 13 && $(this).val() != '') {
+                    socket.emit('sendMsg', $(this).val());
+                    $(this).val('');
+                }
+            });
+
+            $('#login').click(function() {
+                console.log("clicked")
+                var room = $('#room').val()
+                var clientId = $('#client').val()
+                socket.emit('join', {
+                    room: room,
+                    client: clientId
+                })
+                $('#login_form').addClass('hide')
+                $('#chat_form').removeClass('hide')
+            })
+        });
+    </script>
+    <style>
+        .hide {
+            display: none
+        }
+    </style>
+</head>
+
+<body>
+    <ul id="userList"></ul>
+    <div id="login_form">
+        <h1>로그인 쿠다사이</h1>
+        <input type="text" id="client">
+        <select id="room">
+            <option value="room1">Room1</option>
+            <option value="room2">Room2</option>
+            <option value="room3">Room3</option>
+        </select>
+        <button id="login">로그인</button>
+    </div>
+    <div id="chat_form" class="hide">
+        <p>Input: <input type="text" id="userMsg"></p>
+        <p><button id="send">Send message</button></p>
+        <div id="msgPool"></div>
+    </div>
+</body>
+
+</html>

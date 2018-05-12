@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>로그인</title>
+        <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+    </head>
+    <body>
+        <script>
+            $(document).ready(function(){
+                $.ajax({
+                    url:'https://localhost:4321/api/user',
+                    method:'GET',
+//                    data:adf
+//                    datatype:asfdd
+                }).done(function(){
+                    console.log('success')
+                    location.href = '/'
+                }).fail(function(){
+                    console.log('failed')
+                })
+            })
+            
+            $('#submit').click(function(){
+                $.ajax({
+                    url:'https://localhost:4321/api/user',
+                    method:'POST',
+                    data:{userId:$('#id'0.val(),userPw:$('#pwd').val()},
+                    dataType:'json'
+                }).done(function(){
+                    location.href = '/'
+                }).fail(function({
+                    alert('Login Failed')
+                }))
+            })
+        </script>
+        <h1>로그인</h1>
+        <hr> 
+        ID : <input type="text" id="id"> <button type="submit">제출하기</button>
+        <br>PW : <input type="text" id="pwd"> <button type="submit">제출하기</button>
+        <button id="submit">버튼</button>
+    </body>
+</html>

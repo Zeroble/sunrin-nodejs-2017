@@ -1,0 +1,18 @@
+{
+    "production": {
+        "database" : {
+            "host" : "127.0.0.1",
+            "user" : "sunrin",
+            "password" : "gkahslzk",
+            "database" : "sunrin"
+        }
+    },
+    "development" : {
+        "database" : {
+            "host" : "127.0.0.1",
+            "user" : "root",
+            "password" : "1232",
+            "database" : "ngdbd"
+        }
+    }
+}
